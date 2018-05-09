@@ -4,7 +4,7 @@ const storeController = require('../controllers/storeController');
 const userController = require('../controllers/userController');
 const authController = require('../controllers/authController');
 
-//call the error handler
+// call the error handler
 const { catchErrors } = require('../handlers/errorHandlers');
 
 // Do work here
@@ -24,7 +24,7 @@ router.post('/add/:id',
     catchErrors(storeController.updateStore)
 );
 
-//store routes
+// store routes
 router.get('/stores/:id/edit', catchErrors(storeController.editStore));
 router.get('/store/:slug',  catchErrors(storeController.getStoreBySlug));
 router.get('/tags', catchErrors(storeController.getStoresByTag));
@@ -34,7 +34,7 @@ router.get('/login', userController.loginForm);
 router.post('/login', authController.login);
 router.get('/register', userController.registerForm);
 
-//user routes
+// user routes
 router.post('/register', 
     userController.validateRegister,
     userController.register,
@@ -44,6 +44,11 @@ router.post('/register',
 router.get('/logout', authController.logout);
 
 router.get('/account', authController.isLoggedIn, userController.account);
-router.post('/account', catchErrors(userController.updateAccount) )
+router.post('/account', catchErrors(userController.updateAccount) );
+router.post('/account/forgot', catchErrors(authController.forgot));
+router.get('/account/reset/:token', catchErrors(authController.reset));
+router.post('/account/reset/:token', 
+    authController.confirmedPasswords, 
+    catchErrors(authController.update));
 
 module.exports = router;
