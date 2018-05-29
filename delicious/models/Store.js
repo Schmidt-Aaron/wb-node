@@ -38,6 +38,9 @@ const storeSchema = new mongoose.Schema({
         ref: "User",
         required: 'You must supply an author.'
     }
+}, {
+    toJSON: { virtuals: true },
+    toObject: { virtuals: true }
 });
 
 // define our index
@@ -72,5 +75,12 @@ storeSchema.statics.getTagsList = function() {
         { $sort: { count: -1 }}
     ]);
 };
+
+// find reviews where the stores _id prop === reviews store name
+storeSchema.virtual('reviews', {
+    ref: 'Review', // the model to link
+    localField: '_id', // which field on the store
+    foreignField: 'store' // which field on the review
+})
 
 module.exports = mongoose.model('Store', storeSchema);
