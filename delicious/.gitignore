@@ -1,5 +1,7 @@
 //basic stuff
 node_modules
 .env
+.idea
+*.log
 
 
